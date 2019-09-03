@@ -1,0 +1,334 @@
+#################################################
+###############  Files/Movement  ################
+#################################################
+
+# ----------------------
+# Quick clear of terminal
+# ----------------------
+alias c='clear'
+
+# ----------------------
+# Show hidden files
+# ----------------------
+alias l.='ls -d .* --color=auto'
+
+# ----------------------
+# Using colorls gem
+# ----------------------
+alias ls='colorls -A'
+
+# ----------------------
+# Quick Home Directory
+# ----------------------
+alias home='cd ~'
+
+# ----------------------
+# A quick way to get out of current directory
+# ----------------------
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../..'
+
+# ----------------------
+# Make a folder and cd into it
+# ----------------------
+mkcd() { mkdir -p $1; cd $1 }
+
+# ----------------------
+# Changes directory and lists directories contents
+# ----------------------
+function cdd() {
+    cd $1
+    ls
+}
+
+# ----------------------
+# Colorize the grep command output for ease of use (good for log files)
+# ----------------------
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# ----------------------
+# Search Through Terminal History
+# ----------------------
+alias hs='history | grep'
+
+# ----------------------
+# Make mount command output pretty / readable
+# ----------------------
+alias mount='mount |column -t'
+
+# ----------------------
+# Create a new set of commands
+# ----------------------
+alias path='echo -e ${PATH//:/\\n}'
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+
+
+#################################################
+################    Root User    ################
+#################################################
+
+# ----------------------
+# Tune sudo and su
+# ----------------------
+alias root='sudo -i'
+alias su='sudo -i'
+
+
+#################################################
+################   System Info   ################
+#################################################
+
+# ----------------------
+# Pass options to free
+# ----------------------
+alias meminfo='free -m -l -t'
+
+# ----------------------
+# Show top process eating MEMORY
+# ----------------------
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+# ----------------------
+# Show top process eating CPU
+# ----------------------
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+#################################################
+################   Ruby/Rails   #################
+#################################################
+
+# ----------------------
+# Rails Aliases#
+# ----------------------
+alias rg='rails generate'
+alias rc='rails console'
+alias rs='rails server'
+alias rgc='rails generate controller'
+alias rgmd='rails generate model'
+alias rgm='rails generate migration'
+alias rgr='rails generate resource'
+alias rgbt='rails g bootstrap:themed'
+alias rdbm='rake db:migrate'
+alias rdbm0='rake db:migrate VERSION=0'
+alias rdbmu='rake db:migrate:up'
+alias rdbmd='rake db:migrate:down'
+alias rdbr='rake db:rollback'
+alias rdbc='rake db:create'
+alias rdbp='rake db:drop'
+alias rdbs='rake db:seed'
+alias rdbhr='pgr && rake db:drop db:create db:migrate db:schema:dump db:setup' # db hard reset
+alias rr='rake routes'
+alias rrg='rake routes | grep'
+alias ber='bundle exec rspec'
+alias bi='bundle install'
+alias biwp='bundle install --without production'
+alias bup='bundle update'
+alias bui='bundle update && bundle install' # Bundle update and install, update doesn't touch Gemfile.lock
+
+#-----------------------
+# Rails Setup Helpers (make into generators?)
+#-----------------------
+# Devise Setup (Add a name for the user model at the end)
+alias sud='rails generate devise:install && rails generate devise'
+
+## Devise with Bootstrap Setup (Still need to add to application.css)
+alias sudbs='rails generate bootstrap:install static && rails g devise:views:locale en && rails g devise:views:bootstrap_templates'
+
+# ----------------------
+# RBENV
+# ----------------------
+alias rbv='rbenv install' # Install a specific Ruby version
+alias rbg='rbenv global' # Sets the global version of Ruby to be used in all shells
+alias rbh='rbenv rehash' # Run this command after you install a new version of Ruby
+
+# ----------------------
+# RVM
+# ----------------------
+# This is often needed after switching ruby versions.
+alias rvmlid='rvm use ruby --latest --install --default' # RVM latest stable ruby install as default
+alias bs='gem install bundle && bundle install' # Bundle Setup, adds the bundle gem and updates
+alias bsu='gem install bundle && bundle update && bundle install' # Bundle Setup, adds the bundle gem and updates
+
+# ----------------------
+# MySQL
+# ----------------------
+alias msr="sudo /etc/init.d/mysql stop && sudo /etc/init.d/mysql start" # Restart MySQL server
+
+
+#################################################
+################     Python     ################
+#################################################
+
+# ----------------------
+# Show Current Python Environment
+# ----------------------
+function currentenv() {
+    conda env list | grep \* | cut -d ' ' -f 1
+}
+
+alias python='python3'
+alias pip='pip3'
+alias venv='source bin/activate'
+alias dea='deactivate'
+
+
+#################################################
+################       C++       ################
+#################################################
+
+# ----------------------
+# Compile C++ Program
+# ----------------------
+function compilecpp() {
+    g++ "$1".cpp -o "$1" &&
+    ./$1
+}
+
+
+#################################################
+################       Git       ################
+#################################################
+
+alias gic='git init && git add -A && git commit -m "Initial commit"' # Git initial commit
+alias gaa='git add .'  # Exclude Deleted
+alias gac="git add . && git commit -m $1"
+alias gs='git status'
+alias gcm='git commit -m'
+alias gcb='git checkout -b'
+alias gchm='git checkout master'
+alias gc='git clone'
+alias gf='git fetch'
+alias gi='git init'
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias glg='git log --graph --oneline --decorate --all'
+alias gld='git log --pretty=format:"%h %ad %s" --date=short --all'
+alias gp='git pull'
+alias gpom='git push -u origin master' # Push to Github (V2)
+alias gcp='git config --global credential.helper 'cache --timeout=14400'' # Cache github password for 4 hour
+
+function gitpush() {
+    B=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+    git add -A .
+    git commit -m "quick push"
+    git push -u origin master
+}
+
+function gitrefresh() {
+    B=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+    git checkout master
+    git pull origin master
+    git checkout $B
+}
+
+commit() {
+    commitMessage="$1"
+    if [ "$commitMessage" = "" ]; then
+        commitMessage=":pencil: Small changes"
+    fi
+    git add .
+    eval "git commit -a -m '${commitMessage}'"
+}
+
+clone() {
+    if [[ $1 =~ "hub|lab" ]]; then
+        provider="$1"
+        shift
+    else
+        provider="hub"
+    fi
+    eval "git clone git@git${provider}.com:$1.git $2"
+}
+
+
+#################################################
+################     Heroku     #################
+#################################################
+
+alias gphm='git push heroku master' # Push to Heroku
+alias hf="heroku update || heroku help" # Heroku Fix; Fixes most heroku issues
+alias hai="heroku apps:info" # Get info on current Heroku App
+alias hgra="heroku git:remote -a" # Heroku Add Git Remote, adds git remote for app
+alias hrdm="heroku run rake db:migrate"
+alias hrdhr="heroku run 'rake db:drop db:create db:migrate db:schema:dump db:setup'"
+alias hl="heroku logs" # Logs
+alias hlg="heroku logs -n 10000 | grep" # Logs w/ grep
+alias hlt="heroku logs -t"
+alias hltg="heroku logs -t -n 10000 | grep" # Logs Tail w/ grep
+alias hld="heroku logs -n 10000 > tmp/heroku-logs.log" # Heroku logs dump, dumps heroku logs to tmp file
+alias rap="RAILS_ENV=production rake assets:precompile" # Rails assets precompile
+
+
+#################################################
+################    Learn co    #################
+#################################################
+
+alias lrn="learn" # Checks Learn co if assignment is complete with no errors
+alias lrns="learn submit" # Submits Learn co assignment
+
+
+#################################################
+################    Personal    #################
+#################################################
+
+alias code="code ."  # Open VSCode
+alias f='fzf' # Search
+alias lg='lazygit'  # A simple terminal UI for git commands
+alias aliases='code ~/.aliases'  # opens .aliases in vscode
+alias zshrc='code ~/.zshrc'  # opens .zshrc in vscode
+alias cheat='cht.sh $1'  # cheat sheet
+alias exa='exa --long --header --git'  # a color version of ls -l
+alias help='tldr'  # Simplified and community-driven man pages
+alias how='function hdi(){ howdoi $* -c -n 5; }; hdi'  # Instant coding answers
+alias mountusb='sudo mount /dev/sdb1 /mnt' #  Mount usb
+alias unmountusb='sudo umount /dev/sdb1' #  Unmount usb
+alias stats='neofetch' # Display System Stats
+alias reload="exec ${SHELL} -l" # reload terminal
+alias blame='systemd-analyze blame' # lists the times programs take to run
+alias systemlog='code /var/log/syslog' # opens /var/log/syslog
+
+# ----------------------
+# Save dotfiles to github
+# ----------------------
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias da='dotfiles add $1'  # dotfiles add <file being added>
+alias dcm='dotfiles commit -m $1'  # dotfile commit -m "commit message"
+alias dp='dotfiles push'  # dotfile push
+
+# ----------------------
+# Opens shortcuts.json
+# ----------------------
+shortcuts() {
+    cd .local/share/gnome-shell/extensions/Shortcuts@kyle.aims.ac.za/
+    code shortcuts.json
+}
+
+# ----------------------
+# Show file path
+# ----------------------
+filepath() {
+    for f in "$@"; do echo ${f}(:A); done
+}
+
+# ----------------------
+# Make manpages look nicer
+# ----------------------
+man () {
+    LESS_TERMCAP_mb=$(tput setaf 4)\
+    LESS_TERMCAP_md=$(tput setaf 4;tput bold) \
+    LESS_TERMCAP_so=$(tput setaf 7;tput setab 4;tput bold) \
+    LESS_TERMCAP_us=$(tput setaf 6) \
+    LESS_TERMCAP_me=$(tput sgr0) \
+    LESS_TERMCAP_se=$(tput sgr0) \
+    LESS_TERMCAP_ue=$(tput sgr0) \
+    command man "$@"
+}
